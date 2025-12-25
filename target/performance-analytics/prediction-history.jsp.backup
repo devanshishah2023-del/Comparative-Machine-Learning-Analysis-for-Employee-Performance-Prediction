@@ -1,0 +1,103 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction History - Employee Performance Analytics</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .badge {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .badge-warning {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .badge-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .table thead {
+            background-color: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <h4 style="color: white; margin: 0;">Employee Performance Analytics</h4>
+            <div>
+                <a href="dashboard.jsp">Dashboard</a>
+                <a href="admin.jsp">Admin</a>
+                <a href="model-history.jsp">Model History</a>
+                <a href="prediction-history.jsp">Prediction History</a>
+                <a href="logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Prediction History</h2>
+
+        <table class="table table-striped table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Predicted Performance</th>
+                    <th>Confidence</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="prediction" items="${predictions}">
+                    <tr>
+                        <td>${prediction.employeeId}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${prediction.predictedPerformance == 'High'}">
+                                    <span class="badge badge-success">High</span>
+                                </c:when>
+                                <c:when test="${prediction.predictedPerformance == 'Medium'}">
+                                    <span class="badge badge-warning">Medium</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="badge badge-danger">Low</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>${prediction.confidence}%</td>
+                        <td>${prediction.department}</td>
+                        <td><fmt:formatDate value="${prediction.date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
